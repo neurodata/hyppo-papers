@@ -4,5 +4,5 @@ This repo compiles all of the relevant figures found in our papers related to [`
 
 ## Repo Contents
 
-- [hyppo: A Comprehensive Multivariate Hypothesis Testing Python Package](https://github.com/neurodata/hyppo-papers/tree/main/hyppo)
-- [Learning Interpretable Characteristic Kernels via Decision Forests](https://github.com/neurodata/hyppo-papers/tree/main/kmerf)
+- [hyppo: A Comprehensive Multivariate Hypothesis Testing Python Package](hyppo/)
+- [Learning Interpretable Characteristic Kernels via Decision Forests](kmerf/)
