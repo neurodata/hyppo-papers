@@ -1,0 +1,7 @@
+# Nonparametric MANOVA via Independence Testing
+
+Sambit Panda, Cencheng Shen, Ronan Perry, Jelle Zorn, Antoine Lutz, Carey E. Priebe, Joshua T. Vogelstein
+
+**Abstract**: The *k*-sample testing problem tests whether or not k groups of data points are sampled from the same distribution. Multivariate analysis of variance (MANOVA) is currently the gold standard for *k*-sample testing but makes strong, often inappropriate, parametric assumptions. Moreover, independence testing and *k*-sample testing are tightly related, and there are many nonparametric multivariate independence tests with strong theoretical and empirical properties, including distance correlation (Dcorr) and Hilbert-Schmidt-Independence-Criterion (Hsic). We prove that universally consistent independence tests achieve universally consistent *k*-sample testing and that *k*-sample statistics like Energy and Maximum Mean Discrepancy (MMD) are exactly equivalent to Dcorr. Empirically evaluating these tests for *k*-sample scenarios demonstrates that these nonparametric independence tests typically outperform MANOVA, even for Gaussian distributed settings. Finally, we extend these non-parametric *k*-sample testing procedures to perform multiway and multilevel tests. Thus, we illustrate the existence of many theoretically motivated and empirically performant *k*-sample tests. A Python package with all independence and *k*-sample tests called hyppo is available from this https URL.
+
+arXiv: https://arxiv.org/abs/1910.08883
