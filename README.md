@@ -5,7 +5,7 @@ This repo compiles all of the relevant figures found in our papers related to [`
 ## Repo Contents
 
 - [High-Dimensional Independence Testing and Maximum Marginal Correlation](max_margin/)
-- [hyppo: A Comprehensive Multivariate Hypothesis Testing Python Package](hyppo/)
+- [hyppo: A Multivariate Hypothesis Testing Python Package](hyppo/)
 - [Learning Interpretable Characteristic Kernels via Decision Forests](kmerf/)
 - [Nonparametric MANOVA via Independence Testing](ksample/)
 - [The Chi-Square Test of Distance Correlation](fast/)
