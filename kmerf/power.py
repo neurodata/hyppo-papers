@@ -1,7 +1,7 @@
 import numpy as np
 from math import ceil
 
-from hyppo.sims import indep_sim
+from hyppo.tools import indep_sim
 
 
 def _indep_sim_gen(sim, n, p, noise=True):
