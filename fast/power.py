@@ -1,7 +1,7 @@
 import numpy as np
 from math import ceil
 
-from hyppo.tools import linear
+from hyppo.tools import indep_sim
 
 
 def _sim_gen(sim, n, p, noise=True):
@@ -9,11 +9,11 @@ def _sim_gen(sim, n, p, noise=True):
     Generate x, y from each sim
     """
     if sim in ["multiplicative_noise", "multimodal_independence"]:
-#         x, y = indep_sim(sim, n, p)
-        x, y = multimodal_independence(n, p)
+        x, y = indep_sim(sim, n, p)
+#         x, y = multimodal_independence(n, p)
     else:
-#         x, y = indep_sim(sim, n, p, noise=noise)
-        x, y = linear(n, p, noise=noise)
+        x, y = indep_sim(sim, n, p, noise=noise)
+#         x, y = linear(n, p, noise=noise)
 
 
     return x, y
@@ -24,9 +24,9 @@ def _perm_stat(test, sim, n=100, p=1, noise=True):
     Calculated permuted and observed test statistics
     """
     x, y = _sim_gen(sim, n, p, noise=noise)
-    obs_stat = test()._statistic(x, y)
+    obs_stat = test().statistic(x, y)
     permy = np.random.permutation(y)
-    perm_stat = test()._statistic(x, permy)
+    perm_stat = test().statistic(x, permy)
 
     return obs_stat, perm_stat
 
