@@ -39,16 +39,8 @@ class _ParallelP(object):
                 degree=self.angle,
                 trans=self.trans,
             )
-            _, z = self.ksim(
-                self.sim,
-                self.n,
-                self.p,
-                noise=self.noise,
-                degree=-self.angle,
-                trans=self.trans,
-            )
 
-        u, v = k_sample_transform([x, y, z])
+        u, v = k_sample_transform([x, y])
         obs_stat = self.test.statistic(u, v)
 
         permv = self.rngs[index].permutation(v)
