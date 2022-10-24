@@ -21,31 +21,23 @@ class _ParallelP(object):
         self.p = p
         self.noise = noise
         self.rngs = rngs
+        
+        self.kwargs = {}
+        if ksim.__name__ == "trans_ksamp":
+            self.kwargs["trans"] = trans
 
     def __call__(self, index):
-        if (
-            self.sim.__name__ == "multiplicative_noise"
-            or self.sim.__name__ == "multimodal_independence"
-        ):
-            x, y = self.ksim(
-                self.sim, self.n, self.p, degree=self.angle, trans=self.trans
+        if self.sim == "multimodal_independence":
+            x, y, z = self.ksim(
+                self.sim, self.n, self.p, k=3, degree=[0, 0], **self.kwargs
+            )
+        elif self.sim == "multiplicative_noise":
+            x, y, z = self.ksim(
+                self.sim, self.n, self.p, k=3, degree=[self.angle, -self.angle], **self.kwargs
             )
         else:
-            x, y = self.ksim(
-                self.sim,
-                self.n,
-                self.p,
-                noise=self.noise,
-                degree=self.angle,
-                trans=self.trans,
-            )
-            _, z = self.ksim(
-                self.sim,
-                self.n,
-                self.p,
-                noise=self.noise,
-                degree=-self.angle,
-                trans=self.trans,
+            x, y, z = self.ksim(
+                self.sim, self.n, self.p, k=3, degree=[self.angle, -self.angle], noise=self.noise, **self.kwargs
             )
 
         u, v = k_sample_transform([x, y, z])
@@ -177,7 +169,7 @@ def power(
     return empirical_power
 
 
-def power_2samp_sample(
+def power_ksamp_sample(
     test,
     ksim,
     sim,
@@ -228,7 +220,7 @@ def power_2samp_sample(
     )
 
 
-def power_2samp_dimension(
+def power_ksamp_dimension(
     test,
     ksim,
     sim,
@@ -279,7 +271,7 @@ def power_2samp_dimension(
     )
 
 
-def power_2samp_angle(
+def power_ksamp_angle(
     test,
     ksim,
     sim,
