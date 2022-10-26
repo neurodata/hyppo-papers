@@ -10,34 +10,29 @@ class _ParallelP(object):
     Helper function to calculate parallel power.
     """
 
-    def __init__(self, test, ksim, sim, n, p, noise, rngs, angle, trans):
+    def __init__(self, test, ksim, sim, n, p, noise, rngs, angle):
         self.test = test()
         self.ksim = ksim
         self.sim = sim
         self.angle = angle
-        self.trans = trans
 
         self.n = n
         self.p = p
         self.noise = noise
         self.rngs = rngs
-        
-        self.kwargs = {}
-        if ksim.__name__ == "trans_ksamp":
-            self.kwargs["trans"] = trans
 
     def __call__(self, index):
         if self.sim == "multimodal_independence":
             x, y, z = self.ksim(
-                self.sim, self.n, self.p, k=3, degree=[0, 0], **self.kwargs
+                self.sim, self.n, self.p, k=3, degree=[0, 0]
             )
         elif self.sim == "multiplicative_noise":
             x, y, z = self.ksim(
-                self.sim, self.n, self.p, k=3, degree=[self.angle, -self.angle], **self.kwargs
+                self.sim, self.n, self.p, k=3, degree=[self.angle, -self.angle]
             )
         else:
             x, y, z = self.ksim(
-                self.sim, self.n, self.p, k=3, degree=[self.angle, -self.angle], noise=self.noise, **self.kwargs
+                self.sim, self.n, self.p, k=3, degree=[self.angle, -self.angle], noise=self.noise
             )
 
         u, v = k_sample_transform([x, y, z])
@@ -62,7 +57,6 @@ def _perm_test(
     workers=1,
     random_state=None,
     angle=90,
-    trans=0,
 ):
     r"""
     Helper function that calculates the statistical.
@@ -103,7 +97,6 @@ def _perm_test(
         noise=noise,
         rngs=rngs,
         angle=angle,
-        trans=trans,
     )
     alt_dist, null_dist = map(list, zip(*list(mapwrapper(parallelp, range(reps)))))
     alt_dist = np.array(alt_dist)
@@ -119,7 +112,6 @@ def power(
     n=100,
     p=1,
     angle=90,
-    trans=0,
     noise=True,
     alpha=0.05,
     reps=1000,
@@ -154,7 +146,6 @@ def power(
         n=n,
         p=p,
         angle=angle,
-        trans=trans,
         noise=noise,
         reps=reps,
         workers=workers,
@@ -176,7 +167,6 @@ def power_ksamp_sample(
     n=100,
     p=1,
     angle=90,
-    trans=0,
     noise=True,
     alpha=0.05,
     reps=1000,
@@ -211,7 +201,6 @@ def power_ksamp_sample(
         n=n,
         p=p,
         angle=angle,
-        trans=trans,
         noise=noise,
         alpha=alpha,
         reps=reps,
@@ -227,7 +216,6 @@ def power_ksamp_dimension(
     n=100,
     p=1,
     angle=90,
-    trans=0,
     noise=False,
     alpha=0.05,
     reps=1000,
@@ -262,7 +250,6 @@ def power_ksamp_dimension(
         n=n,
         p=p,
         angle=angle,
-        trans=trans,
         noise=noise,
         alpha=alpha,
         reps=reps,
@@ -278,7 +265,6 @@ def power_ksamp_angle(
     n=100,
     p=1,
     angle=90,
-    trans=0,
     noise=True,
     alpha=0.05,
     reps=1000,
@@ -313,7 +299,6 @@ def power_ksamp_angle(
         n=n,
         p=p,
         angle=angle,
-        trans=trans,
         noise=noise,
         alpha=alpha,
         reps=reps,
