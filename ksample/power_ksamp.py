@@ -10,7 +10,7 @@ class _ParallelP(object):
     Helper function to calculate parallel power.
     """
 
-    def __init__(self, test, ksim, sim, n, p, noise, rngs, angle):
+    def __init__(self, test, ksim, sim, n, p, noise, rngs, angle, pow_type):
         self.test = test()
         self.ksim = ksim
         self.sim = sim
@@ -20,19 +20,20 @@ class _ParallelP(object):
         self.p = p
         self.noise = noise
         self.rngs = rngs
+        self.pow_type = pow_type
 
     def __call__(self, index):
         if self.sim == "multimodal_independence":
             x, y, z = self.ksim(
-                self.sim, self.n, self.p, k=3, degree=[0, 0]
+                self.sim, self.n, self.p, k=3, degree=[0, 0], pow_type=self.pow_type
             )
         elif self.sim == "multiplicative_noise":
             x, y, z = self.ksim(
-                self.sim, self.n, self.p, k=3, degree=[self.angle, -self.angle]
+                self.sim, self.n, self.p, k=3, degree=[self.angle, -self.angle], pow_type=self.pow_type
             )
         else:
             x, y, z = self.ksim(
-                self.sim, self.n, self.p, k=3, degree=[self.angle, -self.angle], noise=self.noise
+                self.sim, self.n, self.p, k=3, degree=[self.angle, -self.angle], noise=self.noise, pow_type=self.pow_type
             )
 
         u, v = k_sample_transform([x, y, z])
@@ -57,6 +58,7 @@ def _perm_test(
     workers=1,
     random_state=None,
     angle=90,
+    pow_type="samp"
 ):
     r"""
     Helper function that calculates the statistical.
@@ -97,6 +99,7 @@ def _perm_test(
         noise=noise,
         rngs=rngs,
         angle=angle,
+        pow_type=pow_type
     )
     alt_dist, null_dist = map(list, zip(*list(mapwrapper(parallelp, range(reps)))))
     alt_dist = np.array(alt_dist)
@@ -117,6 +120,7 @@ def power(
     reps=1000,
     workers=1,
     random_state=None,
+    pow_type="samp"
 ):
     """
     [summary]
@@ -150,6 +154,7 @@ def power(
         reps=reps,
         workers=workers,
         random_state=random_state,
+        pow_type=pow_type
     )
     cutoff = np.sort(null_dist)[ceil(reps * (1 - alpha))]
     empirical_power = (alt_dist >= cutoff).sum() / reps
@@ -206,6 +211,7 @@ def power_ksamp_sample(
         reps=reps,
         workers=workers,
         random_state=random_state,
+        pow_type="samp"
     )
 
 
@@ -242,7 +248,6 @@ def power_ksamp_dimension(
     alpha : float, optional
         [description], by default 0.05
     """
-
     return power(
         test,
         ksim,
@@ -255,6 +260,7 @@ def power_ksamp_dimension(
         reps=reps,
         workers=workers,
         random_state=random_state,
+        pow_type="dim"
     )
 
 
@@ -304,4 +310,5 @@ def power_ksamp_angle(
         reps=reps,
         workers=workers,
         random_state=random_state,
+        pow_type="samp"
     )
