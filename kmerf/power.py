@@ -28,7 +28,7 @@ def _perm_stat(test, sim, n=100, p=1, noise=True):
     return obs_stat, perm_stat
 
 
-def power(test, sim, n=100, p=1, noise=True, alpha=0.05, reps=1000, auto=False):
+def power_indep(test, sim, n=100, p=1, noise=True, alpha=0.05, reps=1000):
     """
     Calculates empirical power
     """
@@ -37,9 +37,6 @@ def power(test, sim, n=100, p=1, noise=True, alpha=0.05, reps=1000, auto=False):
         zip(*[_perm_stat(test, sim, n, p, noise=noise) for _ in range(reps)]),
     )
     cutoff = np.sort(null_dist)[ceil(reps * (1 - alpha))]
-    empirical_power = (alt_dist >= cutoff).sum() / reps
-
-    if empirical_power == 0:
-        empirical_power = 1 / reps
+    empirical_power = (1 + (alt_dist >= cutoff).sum()) / (1 + reps)
 
     return empirical_power
