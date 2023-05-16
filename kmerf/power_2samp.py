@@ -17,12 +17,12 @@ def _indep_sim_gen(sim, n, p, noise=True):
     return x, y
 
 
-def _perm_stat(test, sim, n=100, p=1, noise=True):
+def _perm_stat(test, test_name, sim, n=100, p=1, noise=True):
     """
     Generates null and alternate distributions
     """
     u, v = rot_ksamp(sim, n, p, noise=noise, pow_type="dim")
-    if test.__name__ == "KMERF":
+    if test_name == "KMERF":
         x, y = k_sample_transform([u, v], test_type="rf")
     else:
         x, y = k_sample_transform([u, v])
@@ -37,10 +37,11 @@ def power_ksamp(test, sim, n=100, p=1, noise=True, alpha=0.05, reps=1000):
     """
     Calculates empirical power
     """
+    test_name = test.__name__
     test = test()
     alt_dist, null_dist = map(
         np.float64,
-        zip(*[_perm_stat(test, sim, n, p, noise=noise) for _ in range(reps)]),
+        zip(*[_perm_stat(test, test_name, sim, n, p, noise=noise) for _ in range(reps)]),
     )
     cutoff = np.sort(null_dist)[ceil(reps * (1 - alpha))]
     empirical_power = (1 + (alt_dist >= cutoff).sum()) / (1 + reps)
