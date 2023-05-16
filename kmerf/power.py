@@ -21,9 +21,9 @@ def _perm_stat(test, sim, n=100, p=1, noise=True):
     Generates null and alternate distributions
     """
     x, y = _indep_sim_gen(sim, n, p, noise=noise)
-    obs_stat = test().statistic(x, y)
+    obs_stat = test.statistic(x, y)
     permy = np.random.permutation(y)
-    perm_stat = test().statistic(x, permy)
+    perm_stat = test.statistic(x, permy)
 
     return obs_stat, perm_stat
 
@@ -32,6 +32,7 @@ def power_indep(test, sim, n=100, p=1, noise=True, alpha=0.05, reps=1000):
     """
     Calculates empirical power
     """
+    test = test()
     alt_dist, null_dist = map(
         np.float64,
         zip(*[_perm_stat(test, sim, n, p, noise=noise) for _ in range(reps)]),
