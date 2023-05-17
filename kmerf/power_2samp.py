@@ -37,11 +37,7 @@ def _nonperm_pval(test, test_name, sim, n=100, p=1, noise=True):
     """
     Generates fast  permutation pvalues
     """
-    u, v = rot_ksamp(sim, n, p, noise=noise, pow_type="dim")
-    if test_name == "KMERF":
-        x, y = k_sample_transform([u, v], test_type="rf")
-    else:
-        x, y = k_sample_transform([u, v])
+    x, y = rot_ksamp(sim, n, p, noise=noise, pow_type="dim")
     pvalue = test().test(x, y)[1]
 
     return pvalue
